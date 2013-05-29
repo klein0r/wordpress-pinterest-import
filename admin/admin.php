@@ -23,10 +23,40 @@ class pinImpAdminPanel
     {
         if (isset($_POST['_pinimp_feed_urls'])) {
             $_pinimp_feed_urls = $_POST['_pinimp_feed_urls'];
+            $_pinimp_feed_urls = str_replace("\r\n", "\r", $_pinimp_feed_urls);
 
-            // TODO: Validate URLs and add .rss if required
+            $valid_urls = array();
+            foreach (explode("\r", $_pinimp_feed_urls) as $url) {
 
-            update_option('_pinimp_feed_urls', $_pinimp_feed_urls);
+                // Only allow pinterest urls
+                if (contains($url, 'pinterest')) {
+
+                    if (!endsWith($url, '.rss')) {
+
+                        if (endsWith($url, '/')) {
+                            $url = substr($url, 0, strlen($url) - 1);
+                        }
+
+                        $url .= '.rss';
+                    }
+
+                    // Validate with simple pie
+                    $feed = new SimplePie();
+                    $feed->enable_cache(false);
+                    $feed->set_feed_url($url);
+                    $feed->init();
+                    $feed->handle_content_type();
+
+                    if (!$feed->error())
+                    {
+                        $valid_urls[] = $url;
+                    }
+
+                }
+
+            }
+
+            update_option('_pinimp_feed_urls', implode("\r", $valid_urls));
         }
 
         include_once( dirname(__FILE__) . '/settings.php');
@@ -37,4 +67,6 @@ class pinImpAdminPanel
 
 
     }
+
+
 }
