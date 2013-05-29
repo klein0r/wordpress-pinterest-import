@@ -14,7 +14,6 @@ License: GPLv2 or later
 
 require_once(dirname(__FILE__).'/lib/plugin_functions.php');
 require_once(dirname(__FILE__).'/lib/autoload.php');
-require_once(dirname(__FILE__).'/lib/SimplePie.php');
 
 if (!class_exists('pinterestImport')) {
     class pinterestImport

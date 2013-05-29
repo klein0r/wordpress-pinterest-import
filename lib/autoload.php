@@ -31,7 +31,7 @@ class SimplePie_Autoloader
 
         $filename = $this->path . DIRECTORY_SEPARATOR . str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';
         if (file_exists($filename)) {
-            include $filename;
+            require_once($filename);
         }
         else {
             return;
