@@ -58,6 +58,7 @@ if (!class_exists('pinterestImport')) {
 
                 // Load backend libraries
                 if (is_admin()) {
+                    require_once(dirname(__FILE__) . '/admin/feedupdater.php');
                     require_once(dirname(__FILE__) . '/admin/admin.php');
                     $this->adminPanel = new pinImpAdminPanel();
                 }

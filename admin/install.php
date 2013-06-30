@@ -12,22 +12,19 @@ if (preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
  */
 function pinimp_install()
 {
-
     global $wpdb, $wp_roles, $wp_version;
 
     // Check for capability
-    if (!current_user_can('activate_plugins'))
-        return;
+    //if (!current_user_can('activate_plugins'))
+    //    return;
 
     // Set the capabilities for the administrator
     $role = get_role('administrator');
     // We need this role, no other chance
     if (empty($role)) {
-        update_option("ngg_init_check", __('Sorry, NextGEN Gallery works only with a role called administrator', "nggallery"));
+        update_option("pinimp_init_check", __('Sorry, Pinterest Import works only with a role called administrator', "pinimp"));
         return;
     }
-
-    //$role->add_cap('NextGEN Gallery overview');
 
     // upgrade function changed in WordPress 2.3
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -46,12 +43,14 @@ function pinimp_install()
 
     // Create pictures table
     $sql = "CREATE TABLE " . $pinimp_images . " (
-        pid BIGINT(20) NOT NULL AUTO_INCREMENT ,
-        filename VARCHAR(255) NOT NULL ,
-        sourcefeed MEDIUMTEXT NULL ,
-        imagedate DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-        meta_data LONGTEXT,
-        PRIMARY KEY  (pid)
+        `pid` BIGINT(20) NOT NULL AUTO_INCREMENT ,
+        `id` VARCHAR(255) NOT NULL,
+        `title` VARCHAR(255) NOT NULL,
+        `filename` VARCHAR(255) NOT NULL ,
+        `sourcefeed` MEDIUMTEXT NULL ,
+        `imagedate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+        `meta_data` LONGTEXT,
+        PRIMARY KEY (`pid`)
     ) $charset_collate;";
 
     dbDelta($sql);

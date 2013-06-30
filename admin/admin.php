@@ -49,6 +49,10 @@ class pinImpAdminPanel
 
                     if (!$feed->error())
                     {
+                        // Directly update the feed
+                        $feedUpdater = new pinImpFeedUpdater();
+                        $feedUpdater->updateFeed($url);
+
                         $valid_urls[] = $url;
                     }
 
